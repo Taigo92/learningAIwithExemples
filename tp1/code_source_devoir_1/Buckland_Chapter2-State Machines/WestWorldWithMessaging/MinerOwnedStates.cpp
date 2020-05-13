@@ -14,6 +14,7 @@ using std::cout;
 
 #ifdef TEXTOUTPUT
 #include <fstream>
+#include "SteveOwnedStates.h"
 extern std::ofstream os;
 #define cout os
 #endif
@@ -239,7 +240,8 @@ void QuenchThirst::Execute(Miner* pMiner)
 
   cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That's mighty fine sippin' liquer";
 
-  pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());  
+  pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
+  
 }
 
 
@@ -251,8 +253,39 @@ void QuenchThirst::Exit(Miner* pMiner)
 
 bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 {
-  //send msg to global message handler
-  return false;
+	SetTextColor(BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+	switch (msg.Msg)
+	{
+	case Msg_Defy:
+
+		cout << "\nMessage handled by " << GetNameOfEntity(pMiner->ID())
+			<< " at time: " << Clock->GetCurrentTime();
+
+		SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+
+		cout << "\n" << GetNameOfEntity(pMiner->ID())
+			<< ": Okay Hun, ahm a comin'!";
+
+		SetTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		cout << "\nMessage received by " << GetNameOfEntity(pMiner->ID()) <<
+			" it is so hurt: ";
+
+
+		//send a delayed message myself so that I know when to take the stew
+		//out of the oven
+		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,                  //time delay
+			pMiner->ID(),           //sender ID
+			ent_Steve,           //receiver ID
+			Msg_BeHit,        //msg
+			NO_ADDITIONAL_INFO);
+
+		return true;
+
+	}//end switch
+
+	
+	return false; //send message to global message handler
 }
 
 //------------------------------------------------------------------------EatStew
@@ -288,5 +321,7 @@ bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
   //send msg to global message handler
   return false;
 }
+
+
 
 
