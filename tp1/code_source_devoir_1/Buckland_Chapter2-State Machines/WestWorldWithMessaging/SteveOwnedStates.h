@@ -38,11 +38,11 @@ public:
 	//this is a singleton
 	static Drinking* Instance();
 
-	virtual void Enter(Steve* miner);
+	virtual void Enter(Steve* steve);
 
-	virtual void Execute(Steve* miner);
+	virtual void Execute(Steve* steve);
 
-	virtual void Exit(Steve* miner);
+	virtual void Exit(Steve* steve);
 
 	virtual bool OnMessage(Steve* agent, const Telegram& msg);
 };
@@ -50,8 +50,8 @@ public:
 
 //------------------------------------------------------------------------
 //
-//  this is implemented as a state blip. The miner eats the stew, gives
-//  Elsa some compliments and then returns to his previous state
+//  this is implemented as a state. Steve gets drunk
+//  
 //------------------------------------------------------------------------
 class Drunk : public State<Steve>
 {
@@ -68,11 +68,40 @@ public:
 	//this is a singleton
 	static Drunk* Instance();
 
-	virtual void Enter(Steve* miner);
+	virtual void Enter(Steve* steve);
 
-	virtual void Execute(Steve* miner);
+	virtual void Execute(Steve* steve);
 
-	virtual void Exit(Steve* miner);
+	virtual void Exit(Steve* steve);
+
+	virtual bool OnMessage(Steve* agent, const Telegram& msg);
+};
+
+//------------------------------------------------------------------------
+//
+//  this is implemented as a state. Steve gets into fight state
+//  
+//------------------------------------------------------------------------
+class Fighting : public State<Steve>
+{
+private:
+
+	Fighting() {}
+
+	//copy ctor and assignment should be private
+	Fighting(const Fighting&);
+	Fighting& operator=(const Fighting&);
+
+public:
+
+	//this is a singleton
+	static Fighting* Instance();
+
+	virtual void Enter(Steve* steve);
+
+	virtual void Execute(Steve* steve);
+
+	virtual void Exit(Steve* steve);
 
 	virtual bool OnMessage(Steve* agent, const Telegram& msg);
 };

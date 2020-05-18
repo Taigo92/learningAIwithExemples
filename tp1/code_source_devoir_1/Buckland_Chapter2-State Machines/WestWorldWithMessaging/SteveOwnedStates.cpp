@@ -15,6 +15,7 @@ using std::cout;
 #ifdef TEXTOUTPUT
 #include <fstream>
 #include "SteveOwnedStates.h"
+#include "MinerOwnedStates.h"
 extern std::ofstream os;
 #define cout os
 #endif
@@ -75,6 +76,8 @@ void Drunk::Execute(Steve* steve)
 {
 	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "Bob, u are shit!";
 
+	
+	
 	//Defy Steve
 	Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
 		steve->ID(),        //ID of sender
@@ -85,7 +88,7 @@ void Drunk::Execute(Steve* steve)
 
 void Drunk::Exit(Steve* steve)
 {
-	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "I'm so sorry about what i did";
+	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "Leaving drunk state";
 }
 
 
@@ -100,12 +103,42 @@ bool Drunk::OnMessage(Steve* steve, const Telegram& msg)
 		cout << "\nMessage received by " << GetNameOfEntity(steve->ID()) <<
 			" it is so hurt: ";
 
-		steve->GetFSM()->ChangeState(Drinking::Instance());
+		steve->GetFSM()->ChangeState(Fighting::Instance());
+		
 	}
 
 	return true;
 
 	}//end switch
 
+	return false;
+}
+
+Fighting * Fighting::Instance()
+{
+	static Fighting instance;
+
+	return &instance;
+}
+
+
+void Fighting::Enter(Steve * steve)
+{
+	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "Let's fight !";
+}
+
+void Fighting::Execute(Steve * steve)
+{
+	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "Steve and Bob are fighting !";
+	steve->GetFSM()->ChangeState(Drinking::Instance());
+}
+
+void Fighting::Exit(Steve * steve)
+{
+	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "Fight stops!";
+}
+
+bool Fighting::OnMessage(Steve * agent, const Telegram & msg)
+{
 	return false;
 }

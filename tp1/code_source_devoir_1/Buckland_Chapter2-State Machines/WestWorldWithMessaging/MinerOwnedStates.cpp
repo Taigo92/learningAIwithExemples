@@ -247,7 +247,13 @@ void QuenchThirst::Execute(Miner* pMiner)
 
 void QuenchThirst::Exit(Miner* pMiner)
 { 
-  cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
+	if (pMiner->GetFSM()->CurrentState() == Fight::Instance()) {
+		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Exit thirst for fighting !";
+	}
+	else if (pMiner->GetFSM()->CurrentState() == EnterMineAndDigForNugget::Instance()) {
+		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
+	}
+  
 }
 
 
@@ -279,6 +285,8 @@ bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 			ent_Steve,           //receiver ID
 			Msg_BeHit,        //msg
 			NO_ADDITIONAL_INFO);
+
+		pMiner->GetFSM()->ChangeState(Fight::Instance());
 
 		return true;
 
@@ -321,6 +329,36 @@ bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
   //send msg to global message handler
   return false;
 }
+
+//------------------------------------------------------------------------Fight
+Fight* Fight::Instance()
+{
+	static Fight instance;
+
+	return &instance;
+}
+
+void Fight::Enter(Miner * miner)
+{
+	cout << "\n" << GetNameOfEntity(miner->ID()) << ": " << "Let's fight !";
+}
+
+void Fight::Execute(Miner * miner)
+{
+	cout << "\n" << GetNameOfEntity(miner->ID()) << ": " << "Steve and Bob are fighting ! !";
+	miner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
+}
+
+void Fight::Exit(Miner * miner)
+{
+	cout << "\n" << GetNameOfEntity(miner->ID()) << ": " << "Fight ends !";
+}
+
+bool Fight::OnMessage(Miner * agent, const Telegram & msg)
+{
+	return false;
+}
+
 
 
 
