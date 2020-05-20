@@ -31,7 +31,7 @@ Drinking * Drinking::Instance()
 
 void Drinking::Enter(Steve * steve)
 {
-	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "The wine is so yummy!";
+	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "'This beer is so good !'";
 }
 
 void Drinking::Execute(Steve * steve)
@@ -56,7 +56,6 @@ bool Drinking::OnMessage(Steve * agent, const Telegram & msg)
 
 
 //-------------------------------------------------------------------------Drunk
-//------------------------------------------------------------------------Drunk
 
 Drunk* Drunk::Instance()
 {
@@ -74,7 +73,7 @@ void Drunk::Enter(Steve* steve)
 
 void Drunk::Execute(Steve* steve)
 {
-	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "Bob, u are shit!";
+	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "'Bob, you are full of shit!'";
 
 	
 	
@@ -99,7 +98,7 @@ bool Drunk::OnMessage(Steve* steve, const Telegram& msg)
 	{
 	case Msg_BeHit:
 	{
-		SetTextColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		cout << "\nMessage received by " << GetNameOfEntity(steve->ID()) <<
 			" it is so hurt: ";
 
@@ -124,7 +123,7 @@ Fighting * Fighting::Instance()
 
 void Fighting::Enter(Steve * steve)
 {
-	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "Let's fight !";
+	cout << "\n" << GetNameOfEntity(steve->ID()) << ": " << "'Okay Bob, let's fight you and me !'";
 }
 
 void Fighting::Execute(Steve * steve)

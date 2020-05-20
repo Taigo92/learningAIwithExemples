@@ -251,7 +251,7 @@ void QuenchThirst::Exit(Miner* pMiner)
 		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Exit thirst for fighting !";
 	}
 	else if (pMiner->GetFSM()->CurrentState() == EnterMineAndDigForNugget::Instance()) {
-		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
+		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "'Leaving the saloon, feelin' good'";
 	}
   
 }

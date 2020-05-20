@@ -2,12 +2,12 @@
 #define STEVE_OWNED_STATES_H
 //------------------------------------------------------------------------
 //
-//  Name:   MinerOwnedStates.h
+//  Name:   SteveOwnedStates.h
 //
-//  Desc:   All the states that can be assigned to the Miner class.
+//  Desc:   All the states that can be assigned to the Steve class.
 //          Note that a global state has not been implemented.
 //
-//  Author: Mat Buckland 2002 (fup@ai-junkie.com)
+//  Author: lijun zheng
 //
 //------------------------------------------------------------------------
 #include "fsm/State.h"
@@ -19,9 +19,8 @@ struct Telegram;
 
 //------------------------------------------------------------------------
 //
-//  miner changes location to the saloon and keeps buying Whiskey until
-//  his thirst is quenched. When satisfied he returns to the goldmine
-//  and resumes his quest for nuggets.
+//  this is implemented as the first state for Steve. Steve has 1/10 chance
+//  change state to Drunk
 //------------------------------------------------------------------------
 class Drinking : public State<Steve>
 {
@@ -50,7 +49,8 @@ public:
 
 //------------------------------------------------------------------------
 //
-//  this is implemented as a state. Steve gets drunk
+//  this is implemented as a state. Steve gets drunk from drinking state,
+//  when he received a message from Bob, he goes to fight state.
 //  
 //------------------------------------------------------------------------
 class Drunk : public State<Steve>
@@ -79,7 +79,9 @@ public:
 
 //------------------------------------------------------------------------
 //
-//  this is implemented as a state. Steve gets into fight state
+//  this is implemented as a state. Steve gets into fight state.
+//  when fight ends, Steve changes to drinking state
+//  
 //  
 //------------------------------------------------------------------------
 class Fighting : public State<Steve>
