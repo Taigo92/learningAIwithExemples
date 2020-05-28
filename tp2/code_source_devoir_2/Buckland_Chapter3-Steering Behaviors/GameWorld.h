@@ -74,6 +74,7 @@ private:
   bool  m_bRenderNeighbors;
   bool  m_bViewKeys;
   bool  m_bShowCellSpaceInfo;
+  bool	m_bShowColor;
 
 
   void CreateObstacles();
@@ -142,6 +143,8 @@ public:
   void  ToggleViewKeys(){m_bViewKeys = !m_bViewKeys;}
   bool  ViewKeys()const{return m_bViewKeys;}
 
+  bool  ShowColor()const { return m_bShowColor; }
+  void  ToggleShowColor() { m_bShowColor = !m_bShowColor; }
 };
 
 

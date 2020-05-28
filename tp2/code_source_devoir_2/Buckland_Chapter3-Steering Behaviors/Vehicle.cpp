@@ -145,6 +145,28 @@ void Vehicle::Render()
     gdi->GreenPen();
   }
 
+
+  if (World()->ShowColor())
+  {
+	  switch (m_type)
+	  {
+	  case leader:
+		  gdi->RedPen();
+		  break;
+	  case leaderHumain:
+		  gdi->GreenPen();
+		  break;
+	  case chaser:
+		  gdi->BluePen();
+		  break;
+	  case unknown:
+		  gdi->BlackPen();
+		  break;
+	  default:
+		  break;
+	  }
+  }
+
   if (isSmoothingOn())
   { 
     m_vecVehicleVBTrans = WorldTransform(m_vecVehicleVB,
@@ -163,23 +185,9 @@ void Vehicle::Render()
                                          Scale());
   }
 
-  switch (m_type)
-  {
-  case leader:
-	  gdi->RedPen();
-	  break;
-  case leaderHumain:
-	  gdi->GreenPen();
-	  break;
-  case chaser:
-	  gdi->BluePen();
-	  break;
-  case unknown:
-	  gdi->BlackPen();
-	  break;
-  default:
-	  break;
-  }
+ 
+
+  
 
 
   gdi->ClosedShape(m_vecVehicleVBTrans);

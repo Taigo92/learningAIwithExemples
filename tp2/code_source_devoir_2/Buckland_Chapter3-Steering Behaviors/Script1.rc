@@ -48,6 +48,7 @@ BEGIN
     BEGIN
         MENUITEM "Keys",                        ID_VIEW_KEYS
         MENUITEM "FPS",                         ID_VIEW_FPS
+		MENUITEM "Show Color ",					ID_VIEW_COLOR
     END
     POPUP "Smoothing"
     BEGIN

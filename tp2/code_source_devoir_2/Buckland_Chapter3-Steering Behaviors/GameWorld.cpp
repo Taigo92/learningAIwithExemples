@@ -41,7 +41,8 @@ GameWorld::GameWorld(int cx, int cy):
             m_pPath(NULL),
             m_bRenderNeighbors(false),
             m_bViewKeys(false),
-            m_bShowCellSpaceInfo(false)
+            m_bShowCellSpaceInfo(false),
+			m_bShowColor(false)
 {
 
   //setup the spatial subdivision class
@@ -113,7 +114,7 @@ GameWorld::GameWorld(int cx, int cy):
 	  Prm.MaxTurnRatePerSecond, //max turn rate
 	  Prm.VehicleScale,
 	  VehicleType::leaderHumain,
-	  true);        //scale
+	  false);        //scale
 
   m_Vehicles.push_back(leaderHumain);
 
@@ -386,6 +387,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 //-------------------------- HandleMenuItems -----------------------------
 void GameWorld::HandleMenuItems(WPARAM wParam, HWND hwnd)
 {
+AgentLeader* tmp = dynamic_cast<AgentLeader*>(m_Vehicles[m_Vehicles.size() - 1]);
   switch(wParam)
   {
     case ID_OB_OBSTACLES:
@@ -578,22 +580,25 @@ void GameWorld::HandleMenuItems(WPARAM wParam, HWND hwnd)
       break;
 
 	  case ID_MAN_CONTROL:
-		  OutputDebugString(("My output string."));
-
-
-		  AgentLeader* tmp = dynamic_cast<AgentLeader*>(m_Vehicles[m_Vehicles.size() - 1]);
+		  
 		  tmp->ToggleManControl();
 		  if (tmp->ManControl()) {
 			  tmp->Steering()->WanderOff();
 			  tmp->Steering()->SeekDirectionOn();
-			  tmp->SetVelocity(Vector2D());
 		  }
 		  else {
-			  tmp->Steering()->WanderOn();
 			  tmp->Steering()->SeekDirectionOff();
+			  tmp->Steering()->WanderOn();
 		  }
 		  CheckMenuItemAppropriately(hwnd, ID_MAN_CONTROL, tmp->ManControl());
 		  break;
+
+	  case ID_VIEW_COLOR:
+		  ToggleShowColor();
+
+		  CheckMenuItemAppropriately(hwnd, ID_VIEW_COLOR, ShowColor());
+		  break;
+
       
   }//end switch
 }
