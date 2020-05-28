@@ -21,7 +21,10 @@ AgentChaser::AgentChaser(GameWorld * world,
 {
 	Vehicle::SetVehicleType(type);
 
-	Vehicle::Steering()->FlockingOn();
+	if (Vehicle::Type() == VehicleType::chaser) {
+		Vehicle::Steering()->FlockingOn();
+	} 
+	
 }
 
 AgentChaser::~AgentChaser()

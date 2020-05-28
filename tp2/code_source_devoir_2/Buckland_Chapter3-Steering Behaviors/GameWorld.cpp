@@ -51,7 +51,90 @@ GameWorld::GameWorld(int cx, int cy):
   double border = 30;
   m_pPath = new Path(5, border, border, cx-border, cy-border, true); 
 
+
+
+
+
+
+
   //setup the agents
+
+
+  //set up leader humain
+  Vector2D SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0, cy / 2.0 + RandomClamped()*cy / 2.0);
+
+
+  AgentLeader* leaderHumain = new AgentLeader(this,
+	  SpawnPos,                 //initial position
+	  RandFloat()*TwoPi,        //start rotation
+	  Vector2D(0, 0),            //velocity
+	  Prm.VehicleMass,          //mass
+	  Prm.MaxSteeringForce,     //max force
+	  Prm.MaxSpeed,             //max velocity
+	  Prm.MaxTurnRatePerSecond, //max turn rate
+	  Prm.VehicleScale,			//scale
+	  VehicleType::leaderHumain,//vehicle type
+	  false);					// is man controlled ?
+
+  m_Vehicles.push_back(leaderHumain);
+
+  //add it to the cell subdivision
+  m_pCellSpace->AddEntity(leaderHumain);
+
+  //set up leader
+  SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
+	  cy / 2.0 + RandomClamped()*cy / 2.0);
+
+
+  AgentLeader* leader = new AgentLeader(this,
+	  SpawnPos,                 //initial position
+	  RandFloat()*TwoPi,        //start rotation
+	  Vector2D(0, 0),           //velocity
+	  Prm.VehicleMass,          //mass
+	  Prm.MaxSteeringForce,     //max force
+	  Prm.MaxSpeed,             //max velocity
+	  Prm.MaxTurnRatePerSecond, //max turn rate
+	  Prm.VehicleScale,			//scale
+	  VehicleType::leader,		//vehicle type
+	  false);					// is man controlled ?
+
+  m_Vehicles.push_back(leader);
+
+  //add it to the cell subdivision
+  m_pCellSpace->AddEntity(leader);
+
+  //set up chaser for humain leader
+  for (int a = 0; a < 4; ++a) {
+	  //determine a random starting position
+	  Vector2D SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
+		  cy / 2.0 + RandomClamped()*cy / 2.0);
+
+
+	  AgentChaser* pVehicle = new AgentChaser(this,
+		  SpawnPos,                  //initial position
+		  RandFloat()*TwoPi,         //start rotation
+		  Vector2D(0, 0),            //velocity
+		  Prm.VehicleMass,           //mass
+		  Prm.MaxSteeringForce,      //max force
+		  Prm.MaxSpeed,              //max velocity
+		  Prm.MaxTurnRatePerSecond,  //max turn rate
+		  Prm.VehicleScale,		     //scale
+		  VehicleType::chaserHumain);//vehicle type 
+
+
+	  Vector2D offset = Vector2D(5, 0);
+		  
+	  pVehicle->Steering()->OffsetPursuitOn(leaderHumain, offset);
+	  pVehicle->Steering()->FlockingOn();
+	  m_Vehicles.push_back(pVehicle);
+
+	  Vec2DRotateAroundOrigin(offset, 90);
+
+	  //add it to the cell subdivision
+	  m_pCellSpace->AddEntity(pVehicle);
+  }
+
+  //set up chaser for normal leader
   for (int a=0; a<Prm.NumAgents -1 ; ++a)
   {
 
@@ -79,46 +162,9 @@ GameWorld::GameWorld(int cx, int cy):
 
   }
 
-  Vector2D SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
-	  cy / 2.0 + RandomClamped()*cy / 2.0);
+  
 
-
-  AgentLeader* leader = new AgentLeader(this,
-	  SpawnPos,                 //initial position
-	  RandFloat()*TwoPi,        //start rotation
-	  Vector2D(0, 0),           //velocity
-	  Prm.VehicleMass,          //mass
-	  Prm.MaxSteeringForce,     //max force
-	  Prm.MaxSpeed,             //max velocity
-	  Prm.MaxTurnRatePerSecond, //max turn rate
-	  Prm.VehicleScale,			//scale
-	  VehicleType::leader,		//vehicle type
-	  false);					// is man controlled ?
-
-  m_Vehicles.push_back(leader);
-
-  //add it to the cell subdivision
-  m_pCellSpace->AddEntity(leader);
-
-  SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0, cy / 2.0 + RandomClamped()*cy / 2.0);
-
-
-  AgentLeader* leaderHumain = new AgentLeader(this,
-	  SpawnPos,                 //initial position
-	  RandFloat()*TwoPi,        //start rotation
-	  Vector2D(0, 0),            //velocity
-	  Prm.VehicleMass,          //mass
-	  Prm.MaxSteeringForce,     //max force
-	  Prm.MaxSpeed,             //max velocity
-	  Prm.MaxTurnRatePerSecond, //max turn rate
-	  Prm.VehicleScale,			//scale
-	  VehicleType::leaderHumain,//vehicle type
-	  false);					// is man controlled ?
-
-  m_Vehicles.push_back(leaderHumain);
-
-  //add it to the cell subdivision
-  m_pCellSpace->AddEntity(leaderHumain);
+  
  
 
 #define SHOAL
@@ -291,7 +337,7 @@ void GameWorld::SetCrosshair(POINTS p)
 //------------------------- HandleKeyPresses -----------------------------
 void GameWorld::HandleKeyPresses(WPARAM wParam)
 {
-  AgentLeader* tmp = dynamic_cast<AgentLeader*>(m_Vehicles[m_Vehicles.size() - 1]);
+  AgentLeader* tmp = dynamic_cast<AgentLeader*>(m_Vehicles[0]);
 
   switch(wParam)
   {
@@ -386,7 +432,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 //-------------------------- HandleMenuItems -----------------------------
 void GameWorld::HandleMenuItems(WPARAM wParam, HWND hwnd)
 {
-AgentLeader* tmp = dynamic_cast<AgentLeader*>(m_Vehicles[m_Vehicles.size() - 1]);
+AgentLeader* tmp = dynamic_cast<AgentLeader*>(m_Vehicles[0]);
   switch(wParam)
   {
     case ID_OB_OBSTACLES:

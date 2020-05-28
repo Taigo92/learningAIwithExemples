@@ -25,6 +25,7 @@ enum VehicleType {
 	leader,
 	leaderHumain,
 	chaser,
+	chaserHumain,
 	unknown
 };
 
@@ -108,6 +109,7 @@ public:
   double      TimeElapsed()const{return m_dTimeElapsed;}
 
   void		  SetVehicleType(VehicleType type) { m_type = type; }
+  VehicleType Type() const { return m_type; }
  
 };
 
