@@ -68,10 +68,9 @@ GameWorld::GameWorld(int cx, int cy):
                                     Prm.MaxSteeringForce,     //max force
                                     Prm.MaxSpeed,             //max velocity
                                     Prm.MaxTurnRatePerSecond, //max turn rate
-                                    Prm.VehicleScale, //scale
-									VehicleType::chaser);       
+                                    Prm.VehicleScale,		  //scale
+									VehicleType::chaser);     //vehicle type 
 
-    pVehicle->Steering()->FlockingOn();
 
     m_Vehicles.push_back(pVehicle);
 
@@ -87,14 +86,14 @@ GameWorld::GameWorld(int cx, int cy):
   AgentLeader* leader = new AgentLeader(this,
 	  SpawnPos,                 //initial position
 	  RandFloat()*TwoPi,        //start rotation
-	  Vector2D(0, 0),            //velocity
+	  Vector2D(0, 0),           //velocity
 	  Prm.VehicleMass,          //mass
 	  Prm.MaxSteeringForce,     //max force
 	  Prm.MaxSpeed,             //max velocity
 	  Prm.MaxTurnRatePerSecond, //max turn rate
-	  Prm.VehicleScale,
-	  VehicleType::leader,
-	  false);        //scale
+	  Prm.VehicleScale,			//scale
+	  VehicleType::leader,		//vehicle type
+	  false);					// is man controlled ?
 
   m_Vehicles.push_back(leader);
 
@@ -112,9 +111,9 @@ GameWorld::GameWorld(int cx, int cy):
 	  Prm.MaxSteeringForce,     //max force
 	  Prm.MaxSpeed,             //max velocity
 	  Prm.MaxTurnRatePerSecond, //max turn rate
-	  Prm.VehicleScale,
-	  VehicleType::leaderHumain,
-	  false);        //scale
+	  Prm.VehicleScale,			//scale
+	  VehicleType::leaderHumain,//vehicle type
+	  false);					// is man controlled ?
 
   m_Vehicles.push_back(leaderHumain);
 

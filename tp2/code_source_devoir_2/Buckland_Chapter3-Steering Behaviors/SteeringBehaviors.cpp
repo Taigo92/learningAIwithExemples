@@ -679,6 +679,18 @@ Vector2D SteeringBehavior::CalculateDithered()
     }
   }
 
+  if (On(seekDirection) && RandFloat() < Prm.prSeek)
+  {
+	  m_vSteeringForce += SeekDirection() * m_dWeightSeek / Prm.prSeek;
+
+	  if (!m_vSteeringForce.isZero())
+	  {
+		  m_vSteeringForce.Truncate(m_pVehicle->MaxForce());
+
+		  return m_vSteeringForce;
+	  }
+  }
+
   if (On(arrive) && RandFloat() < Prm.prArrive)
   {
     m_vSteeringForce += Arrive(m_pVehicle->World()->Crosshair(), m_Deceleration) * 
@@ -714,7 +726,7 @@ Vector2D SteeringBehavior::Seek(Vector2D TargetPos)
 
 Vector2D SteeringBehavior::SeekDirection()
 {
-	Vector2D OffSet = m_pVehicle->Pos() + 10 * dynamic_cast<AgentLeader*>(m_pVehicle)->Direction();
+	Vector2D OffSet = m_pVehicle->Pos() + 1 * dynamic_cast<AgentLeader*>(m_pVehicle)->Direction();
 	return (Seek(OffSet));
 }
 

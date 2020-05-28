@@ -23,7 +23,6 @@ AgentLeader::AgentLeader(GameWorld * world,
 
 	Vehicle::SetVehicleType(type);
 
-	Vehicle::Steering()->FlockingOff();
 	Vehicle::SetScale(Vector2D(10, 10));
 	Vehicle::Steering()->WanderOn();
 	Vehicle::SetMaxSpeed(70);

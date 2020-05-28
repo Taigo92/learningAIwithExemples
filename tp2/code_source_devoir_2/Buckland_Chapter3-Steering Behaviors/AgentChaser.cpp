@@ -1,4 +1,5 @@
 #include "AgentChaser.h"
+#include "SteeringBehaviors.h"
 
 AgentChaser::AgentChaser(GameWorld * world,
 						Vector2D position, double rotation, 
@@ -19,6 +20,8 @@ AgentChaser::AgentChaser(GameWorld * world,
 												scale)
 {
 	Vehicle::SetVehicleType(type);
+
+	Vehicle::Steering()->FlockingOn();
 }
 
 AgentChaser::~AgentChaser()
