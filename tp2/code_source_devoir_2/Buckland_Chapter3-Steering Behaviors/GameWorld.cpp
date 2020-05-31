@@ -105,38 +105,8 @@ GameWorld::GameWorld(int cx, int cy):
 
   //add it to the cell subdivision
   m_pCellSpace->AddEntity(leader);
-  /*
-  //set up chaser for humain leader
-  for (int a = 0; a < 4; ++a) {
-	  //determine a random starting position
-	  Vector2D SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
-		  cy / 2.0 + RandomClamped()*cy / 2.0);
-
-
-	  AgentChaser* pVehicle = new AgentChaser(this,
-		  SpawnPos,                  //initial position
-		  RandFloat()*TwoPi,         //start rotation
-		  Vector2D(0, 0),            //velocity
-		  Prm.VehicleMass,           //mass
-		  Prm.MaxSteeringForce,      //max force
-		  Prm.MaxSpeed,              //max velocity
-		  Prm.MaxTurnRatePerSecond,  //max turn rate
-		  Prm.VehicleScale,		     //scale
-		  VehicleType::chaserHumain);//vehicle type 
-
-
-	  Vector2D offset = Vector2D(5, 0);
-		  
-	  pVehicle->Steering()->OffsetPursuitOn(leaderHumain, offset);
-	  pVehicle->Steering()->FlockingOn();
-	  m_Vehicles.push_back(pVehicle);
-
-	  Vec2DRotateAroundOrigin(offset, 90);
-
-	  //add it to the cell subdivision
-	  m_pCellSpace->AddEntity(pVehicle);
-  }
-  */
+  
+  
   //set up chaser for normal leader
   for (int a=0; a<Prm.NumAgents -1 ; ++a)
   {
@@ -168,7 +138,33 @@ GameWorld::GameWorld(int cx, int cy):
   }
 
   
+  /**/
+  //set up chaser for humain leader
+  for (int a = 0; a < 4; ++a) {
+	  //determine a random starting position
+	  Vector2D SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
+		  cy / 2.0 + RandomClamped()*cy / 2.0);
 
+
+	  AgentChaser* pVehicle = new AgentChaser(this,
+		  SpawnPos,                  //initial position
+		  RandFloat()*TwoPi,         //start rotation
+		  Vector2D(0, 0),            //velocity
+		  Prm.VehicleMass,           //mass
+		  Prm.MaxSteeringForce,      //max force
+		  Prm.MaxSpeed,              //max velocity
+		  Prm.MaxTurnRatePerSecond,  //max turn rate
+		  Prm.VehicleScale,		     //scale
+		  VehicleType::chaserHumain,
+		  leaderHumain,
+		  a);//vehicle type 
+
+
+	  m_Vehicles.push_back(pVehicle);
+
+	  //add it to the cell subdivision
+	  m_pCellSpace->AddEntity(pVehicle);
+  }
   
  
 

@@ -28,6 +28,19 @@ public:
 		VehicleType type,
 		Vehicle* currentLeader);
 
+	AgentChaser(GameWorld* world,
+		Vector2D position,
+		double    rotation,
+		Vector2D velocity,
+		double    mass,
+		double    max_force,
+		double    max_speed,
+		double    max_turn_rate,
+		double    scale,
+		VehicleType type,
+		Vehicle* currentLeader,
+		int chaserNumber);
+
 	~AgentChaser();
 	void    Update(double time_elapsed);
 };
